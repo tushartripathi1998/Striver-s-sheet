@@ -4,7 +4,6 @@ import java.util.*;
 
 class Main {
     public static void main(String[] args) {
-        System.out.println("Try programiz.pro");
         int[] arr = {1, 0, 1, 0, 1};
         int sum = 2;
         int calculatedSum = 0;
