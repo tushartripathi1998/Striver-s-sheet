@@ -2,38 +2,46 @@ import java.util.*;
 
 class Main {
     public static void main(String[] args) {
-        String s = "aabacbebebeddr";
+        String s = "aabacbebebe";
         int lowest=-1, highest=-1, mid=-1;
         Character firstElement = null;
         Character midElement = null;
         Character lastElement = null;
-        Map<Character, Integer> counterMap = new HashMap<>();
+        int maxSize = 0;
+        Set<Character> counterSet = new HashSet<>();
         
         for (int i=0;i<s.length();i++) {
-            // System.out.println("num "+s.charAt(i));
-            if (!counterMap.containsKey(s.charAt(i))) {
-                System.out.println("s.charAt(i)"+s.charAt(i)+":"+i+"::"+counterMap.size());
-                if (counterMap.size()<=3) {
+            if (!counterSet.contains(s.charAt(i))) {
+                System.out.println("s.charAt(i)"+s.charAt(i)+":"+i+"::"+counterSet.size());
+                if (counterSet.size()<3) {
                     if (firstElement==null) {
                         firstElement = s.charAt(i);
                         lowest = i;
-                    }
-                    if (midElement==null) {
+                    } else if (midElement==null) {
                         midElement = s.charAt(i);
                         mid = i;
                     }
                 } else {
-                    counterMap.remove(firstElement);
+                    counterSet.remove(firstElement);
                     System.out.println("first and last "+lowest+"::"+highest);
+                    
                     firstElement = midElement;
                     lowest = mid;
                     midElement = lastElement;
-                    lowest = highest;
+                    mid = highest;
                 }
-                counterMap.put(s.charAt(i), i);
-                lastElement = s.charAt(i);
+                counterSet.add(s.charAt(i));
                 highest = i;
+                lastElement = s.charAt(i);
+                
             }
+            if (i==s.length()-1) {
+                    highest = i;
+                }
+                if (highest-lowest > maxSize) {
+                    maxSize = highest-lowest;
+                }
         }
+        
     }
 }
