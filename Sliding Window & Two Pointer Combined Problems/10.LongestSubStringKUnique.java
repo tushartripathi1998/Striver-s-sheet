@@ -3,44 +3,28 @@ import java.util.*;
 class Main {
     public static void main(String[] args) {
         String s = "aabacbebebe";
-        int lowest=-1, highest=-1, mid=-1;
-        Character firstElement = null;
-        Character midElement = null;
-        Character lastElement = null;
+        int k = 3;
+        int j=0;
         int maxSize = 0;
-        Set<Character> counterSet = new HashSet<>();
+        Character existing = null;
+        Map<Character, Integer> counterSet = new HashMap<>();
         
         for (int i=0;i<s.length();i++) {
-            if (!counterSet.contains(s.charAt(i))) {
-                System.out.println("s.charAt(i)"+s.charAt(i)+":"+i+"::"+counterSet.size());
-                if (counterSet.size()<3) {
-                    if (firstElement==null) {
-                        firstElement = s.charAt(i);
-                        lowest = i;
-                    } else if (midElement==null) {
-                        midElement = s.charAt(i);
-                        mid = i;
-                    }
-                } else {
-                    counterSet.remove(firstElement);
-                    System.out.println("first and last "+lowest+"::"+highest);
-                    
-                    firstElement = midElement;
-                    lowest = mid;
-                    midElement = lastElement;
-                    mid = highest;
+            char current = s.charAt(i);
+            counterSet.put(current,
+                counterSet.getOrDefault(current, 0)+1);
+            while (counterSet.size() > k) {
+                existing = s.charAt(j);
+                counterSet.put(existing, counterSet.get(existing) - 1);
+                if (counterSet.get(existing) == 0) {
+                    counterSet.remove(existing);
                 }
-                counterSet.add(s.charAt(i));
-                highest = i;
-                lastElement = s.charAt(i);
-                
+                j++;
             }
-            if (i==s.length()-1) {
-                    highest = i;
-                }
-                if (highest-lowest > maxSize) {
-                    maxSize = highest-lowest;
-                }
+            if (maxSize<i-j+1) {
+                maxSize = i-j+1;
+            }
+            System.out.println("Max size is : "+maxSize);
         }
         
     }
