@@ -1,31 +1,33 @@
+// Longest Substring with K Uniques
+
 import java.util.*;
 
 class Main {
     public static void main(String[] args) {
         String s = "aabacbebebe";
         int k = 3;
-        int j=0;
-        int maxSize = 0;
-        Character existing = null;
-        Map<Character, Integer> counterSet = new HashMap<>();
+        int l=0, r=0;
+        int max = 0;
+        Character currentChar = null;
+        Map<Character, Integer> countCh = new HashMap<>();
         
-        for (int i=0;i<s.length();i++) {
-            char current = s.charAt(i);
-            counterSet.put(current,
-                counterSet.getOrDefault(current, 0)+1);
-            while (counterSet.size() > k) {
-                existing = s.charAt(j);
-                counterSet.put(existing, counterSet.get(existing) - 1);
-                if (counterSet.get(existing) == 0) {
-                    counterSet.remove(existing);
+        while (l<s.length() && r<s.length()) {
+            if (r-l+1 > max && countCh.size() <= k) {
+                max = r-l+1;
+            }
+            
+            currentChar = s.charAt(r);
+            countCh.put(currentChar, countCh.getOrDefault(currentChar, 0)+1);
+            while (countCh.size() > k) {
+                currentChar = s.charAt(l);
+                countCh.put(currentChar, countCh.getOrDefault(currentChar, 0)-1);
+                if (countCh.get(currentChar) < 1) {
+                    countCh.remove(currentChar);
                 }
-                j++;
+                l++;
             }
-            if (maxSize<i-j+1) {
-                maxSize = i-j+1;
-            }
-            System.out.println("Max size is : "+maxSize);
+            r++;
         }
-        
+        System.out.println("max is : "+max);
     }
 }
