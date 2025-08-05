@@ -1,38 +1,44 @@
-// Smallest window containing all characters of another string
+// Smallest window containing all characters
+
 import java.util.*;
 import java.util.stream.*;
+import java.util.function.*;
 
 class Main {
     public static void main(String[] args) {
-        String s1 = "timetopractice";
-        String s2 = "toc";
-        Set<Character> subsetContainer = null;
-        int j=0;
-        int minCount = s1.length();
-        String minString = null;
-        
-        for (int i=0;i<s1.length();i++) {
-            subsetContainer = getSubsetChar(s2);
-            j=i;
-            while (subsetContainer.size() > 0 && j<s1.length()) {
-                if(subsetContainer.contains(s1.charAt(j))){
-                    subsetContainer.remove(s1.charAt(j));
-                }
-                if (subsetContainer.size() ==0 && minCount > j-i-1) {
-                    minCount = j-i+1;
-                    minString = i+"_"+j;
-                }
-                j++;
-            }
-        }
-        System.out.println(minString);
-    }
-    
-    public static Set<Character> getSubsetChar(String s2){
-        return s2
+        System.out.println("Try programiz.pro");
+        String mainStr = "ddaaabbcca";
+        String searchStr = "abc";
+        int l=0, r=0;
+        int count = 0;
+        int minLength = mainStr.length();
+        Map<Character, Long> stringMap = searchStr
         .chars()
-        .mapToObj(ch->(char)ch)
-        .collect(Collectors.toSet());
+        .mapToObj(c->(char)c)
+        .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+        
+        for (int i=0;i<mainStr.length();i++) {
+            if (stringMap.containsKey(mainStr.charAt(i))) {
+                stringMap.put(mainStr.charAt(i), stringMap.get(mainStr.charAt(i))-1);
+                if (stringMap.get(mainStr.charAt(i))>=0) {
+                    ++count;
+                }
+            }
+            while (count==searchStr.length()) {
+                System.out.println("left and right are : "+l+":"+r);
+                if (r-l+1 < minLength) {
+                    minLength = r-l+1;
+                }
+                if (stringMap.containsKey(mainStr.charAt(l))) {
+                    stringMap.put(mainStr.charAt(l), stringMap.get(mainStr.charAt(l))+1);
+                    if (stringMap.get(mainStr.charAt(l))>0) {
+                        --count;
+                    }
+                }
+                l++;
+            }
+            r++;
+        }
+        System.out.println("minimum length is : "+minLength);
     }
-    
 }
